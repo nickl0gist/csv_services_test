@@ -1,0 +1,17 @@
+server:
+  port: 8077
+spring:
+  application:
+    name: owner
+  datasource:
+    password: 'password'
+    url: jdbc:postgresql://localhost:5432/horkovcode
+    username: 'horkovcode'
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: validate
+    show-sql: true

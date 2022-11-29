@@ -1,0 +1,9 @@
+### DELETE Request with PRIMARY_KEY which doesn't exist
+DELETE http://localhost:8077/api/v1/owner/a122
+Accept: application/json
+
+###
+### DELETE Request with PRIMARY_KEY which exists
+DELETE http://localhost:8077/api/v1/owner/a10
+Accept: application/json
+###
