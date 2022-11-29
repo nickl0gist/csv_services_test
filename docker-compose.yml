@@ -29,6 +29,28 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+  # Owner Service
+  owner:
+    container_name: owner
+    image: nickl0gist/owner:latest
+    ports:
+      - "8080:8080"
+    environment: SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - postgres
+    depends_on:
+      - postgres
+  # Client Service
+  client:
+    container_name: client
+    image: nickl0gist/client:latest
+    ports:
+      - "8077:8077"
+    environment: SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - postgres
+    depends_on:
+      - postgres
 # network communication
 networks:
   postgres:
