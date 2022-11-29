@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "settings.csv.separator",
+      "type": "java.lang.String",
+      "description": "Description for settings.csv.separator."
+  }
+] }
