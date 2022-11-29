@@ -32,9 +32,9 @@ services:
   # Owner Service
   owner:
     container_name: owner
-    image: nickl0gist/owner:latest
+    image: nickl0gist/owner:0.1
     ports:
-      - "8080:8080"
+      - "8077:8077"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     networks:
@@ -44,9 +44,9 @@ services:
   # Client Service
   client:
     container_name: client
-    image: nickl0gist/client:latest
+    image: nickl0gist/client:0.1
     ports:
-      - "8077:8077"
+      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     networks:
