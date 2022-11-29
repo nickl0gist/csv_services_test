@@ -40,6 +40,7 @@ public class RecordService {
      * convert it to Collection of {@linkplain Record}s. After that method {@linkplain #getPossibleViolations(List)} checks
      * if there are any constraint violations of {@linkplain Record} class. If any violations were found return
      * {@linkplain HttpStatus} - 406. Otherwise, {@linkplain HttpStatus} - 202 returned with information how many rows were saved.
+     *
      * @param file CSV {@linkplain MultipartFile} to be processed
      * @return {@linkplain ResponseEntity} with with String message of result.
      */
@@ -50,7 +51,7 @@ public class RecordService {
 
             StringBuilder str = getPossibleViolations(records);
 
-            if (str.length() > 0){
+            if (str.length() > 0) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(str.toString());
             }
 
@@ -66,6 +67,7 @@ public class RecordService {
 
     /**
      * Convert CSV file to {@linkplain Record} collection.
+     *
      * @param reader {@linkplain Reader} of the given file.
      * @return List of {@linkplain Record}s
      */
@@ -83,6 +85,7 @@ public class RecordService {
 
     /**
      * The method calls {@linkplain #validation validation(Record rec)} method for each record in the given collection.
+     *
      * @param records List of {@linkplain Record}s
      * @return String with specified place of error.
      */
@@ -102,14 +105,15 @@ public class RecordService {
 
     /**
      * Check  {@linkplain Record} entity for possible violations.
+     *
      * @param rec {@linkplain Record} entity.
      * @return String message with indication specific information about the place of violation.
      * Empty String if no violations were found.
      */
-    private String validation (Record rec){
+    private String validation(Record rec) {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Record>> constraintViolations = validator.validate(rec);
-        if(!constraintViolations.isEmpty()){
+        if (!constraintViolations.isEmpty()) {
 
             String violations = constraintViolations.stream()
                     .map(cV -> cV.getPropertyPath() + " " + cV.getMessage() + "; ")
@@ -123,6 +127,7 @@ public class RecordService {
     }
 
     public Record getRecordById(String id) throws NoRecordExistsException {
-        return recordRepository.getRecordByPrimaryKey(id).orElseThrow(() ->new NoRecordExistsException("Record with PRIMARY_KEY " + id + " does not exist."));
+        return recordRepository.getRecordByPrimaryKey(id)
+                .orElseThrow(() -> new NoRecordExistsException("Record with PRIMARY_KEY " + id + " does not exist."));
     }
 }
