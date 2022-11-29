@@ -1,0 +1,15 @@
+### GET request with a header
+GET http://localhost:8080/api/v1/client
+
+
+### Send POST request with .CSV file attached
+POST http://localhost:8080/api/v1/client/upload_csv
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="Book1.csv"
+
+< Book1.csv
+
+--WebAppBoundary--
+###

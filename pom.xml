@@ -10,8 +10,6 @@
     <version>0.1</version>
 
     <modules>
-        <!--        <module>client</module>-->
-        <!--        <module>owner</module>-->
         <module>client</module>
         <module>owner</module>
     </modules>
