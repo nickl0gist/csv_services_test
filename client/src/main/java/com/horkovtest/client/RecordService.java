@@ -1,5 +1,6 @@
 package com.horkovtest.client;
 
+import com.horkovtest.client.exception.NoRecordExistsException;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -121,4 +122,7 @@ public class RecordService {
         return "";
     }
 
+    public Record getRecordById(String id) throws NoRecordExistsException {
+        return recordRepository.getRecordByPrimaryKey(id).orElseThrow(() ->new NoRecordExistsException("Record with PRIMARY_KEY " + id + " does not exist."));
+    }
 }

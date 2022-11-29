@@ -1,5 +1,6 @@
 package com.horkovtest.client;
 
+import com.horkovtest.client.exception.NoRecordExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,16 @@ public class ClientController {
         this.recordService = recordService;
     }
 
-    @GetMapping
-    public ResponseEntity<String> getIndex() {
-        return ResponseEntity.ok("GET Works.");
+    /**
+     * GET request in order to obtain {@linkplain Record} by given Id.
+     * @param id String Primary_key of the {@linkplain Record}.
+     * @return {@linkplain Record}
+     * @throws NoRecordExistsException in case when {@linkplain Record} wasn't found.
+     */
+    @GetMapping("/{id:^[0-9A-Za-z]+$}")
+    public ResponseEntity<Record> getRecordById(@PathVariable String id) throws NoRecordExistsException {
+        Record rec = recordService.getRecordById(id);
+        return ResponseEntity.ok(rec);
     }
 
     /**

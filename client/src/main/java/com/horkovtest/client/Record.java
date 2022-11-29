@@ -34,7 +34,6 @@ public class Record {
     @CsvBindByName(column = "DESCRIPTION")
     private String description;
 
-    //@Pattern(regexp = "^[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]{3}$")
     @Pattern(regexp = "^[0-2][0-9]:[0-5][0-9]$")
     @CsvBindByName(column = "UPDATED_TIMESTAMP")
     private String timestamp;
