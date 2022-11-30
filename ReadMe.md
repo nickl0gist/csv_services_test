@@ -26,5 +26,5 @@ Allows deleting specific Record by its PRIMARY_KEY.
 <p>Owner service exposed on port 8077</p>
 <p>Client service exposed on port 8080</p>
 <p>Postgres service exposed on port 5432</p>
-<p>PgAdmin service exposed on port 50500</p>
+<p>PgAdmin service exposed on port 5050</p>
 <b>
