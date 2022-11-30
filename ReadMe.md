@@ -23,8 +23,8 @@ Allows deleting specific Record by its PRIMARY_KEY.
 
 ## DOCKER ##
 <b>In the root of the project docker-compose.yml file placed which allows running of the both services using Docker.
-Owner service exposed on port 8077
-Client service exposed on port 8080
-Postgres service exposed on port 5432
-PgAdmin service exposed on port 50500
+<p>Owner service exposed on port 8077</p>
+<p>Client service exposed on port 8080</p>
+<p>Postgres service exposed on port 5432</p>
+<p>PgAdmin service exposed on port 50500</p>
 <b>
