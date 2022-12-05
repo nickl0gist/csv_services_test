@@ -40,7 +40,7 @@ public class ClientController {
      */
     @PostMapping(path = "/upload_csv")
     public ResponseEntity<String> registerRecord(@RequestParam(value = "file") MultipartFile file) {
-        if (file.isEmpty() || !file.getContentType().equals("text/csv")) {
+        if (file.isEmpty() || file.getContentType() == null || !file.getContentType().equals("text/csv")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select a CSV file to upload.");
         } else {
             return recordService.processCsvFile(file);

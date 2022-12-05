@@ -1,0 +1,26 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: client
+  datasource:
+    url: jdbc:h2:mem:AZ
+    driver-class-name: org.h2.Driver
+    username: 'sa'
+    password:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+settings:
+  csv:
+    separator: ';'
