@@ -94,6 +94,32 @@ class ClientControllerTest {
     }
 
     @Test
+    void processCsvFileWithViolatedConstraintsTest() throws Exception {
+        // Given
+        String resp = "Record(primaryKey=a_1, name=name1, description=Description1, timestamp=12:00) would not be persisted: primaryKey must match \"^[0-9A-Za-z]+$\"; \r\n" +
+                "Record(primaryKey=a2, name=name2/, description=Description2, timestamp=22:00) would not be persisted: name must match \"^[A-Za-z0-9 ]+\"; \r\n" +
+                "Record(primaryKey=a3, name=name3, description=Description3#, timestamp=08:00) would not be persisted: description must match \"^[A-Za-z0-9 ]+\"; \r\n" +
+                "Record(primaryKey=a4, name=name4, description=Description4, timestamp=18:78) would not be persisted: timestamp must match \"^[0-2][0-9]:[0-5][0-9]$\";";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("Book_Constraint_Violations.csv").getFile());
+        MockMultipartFile mockMultipartFile
+                = new MockMultipartFile(
+                "file",
+                "",
+                "text/csv",
+                Files.readAllBytes(file.toPath()));
+
+        //When
+        mockMvc.perform(multipart(BASE_URL + "/upload_csv")
+                .file(mockMultipartFile))
+
+                // Then
+                .andDo(print())
+                .andExpect(status().isNotAcceptable())
+                .andExpect(content().string(resp));
+    }
+
+    @Test
     void processCsvFileBadRequestTest() throws Exception {
         // Given
         ClassLoader classLoader = getClass().getClassLoader();
@@ -111,5 +137,27 @@ class ClientControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Please select a CSV file to upload."));
+    }
+
+    @Test
+    void processCsvFileInternalServerErrorTest() throws Exception {
+        // Given
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("POST_CSV.http").getFile());
+        MockMultipartFile mockMultipartFile
+                = new MockMultipartFile(
+                "file",
+                "",
+                "text/csv",
+                Files.readAllBytes(file.toPath()));
+
+        //When
+        mockMvc.perform(multipart(BASE_URL + "/upload_csv")
+                .file(mockMultipartFile))
+
+                // Then
+                .andDo(print())
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().string("An error occurred while processing the CSV file."));
     }
 }

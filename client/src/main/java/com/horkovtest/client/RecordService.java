@@ -52,6 +52,10 @@ public class RecordService {
             StringBuilder str = getPossibleViolations(records);
 
             if (str.length() > 0) {
+                //remove new line and spaces at the very end
+                str.deleteCharAt(str.length()-1);
+                str.deleteCharAt(str.length()-1);
+                str.deleteCharAt(str.length()-1);
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(str.toString());
             }
 

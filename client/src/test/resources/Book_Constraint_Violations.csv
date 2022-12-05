@@ -1,0 +1,5 @@
+PRIMARY_KEY;NAME;DESCRIPTION;UPDATED_TIMESTAMP
+a_1;name1;Description1;12:00
+a2;name2/;Description2;22:00
+a3;name3;Description3#;08:00
+a4;name4;Description4;18:78
