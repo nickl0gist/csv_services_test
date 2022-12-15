@@ -4,6 +4,8 @@ import com.horkovtest.client.exception.NoRecordExistsException;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -14,9 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,12 +40,28 @@ public class RecordService {
      * convert it to Collection of {@linkplain Record}s. After that method {@linkplain #getPossibleViolations(List)} checks
      * if there are any constraint violations of {@linkplain Record} class. If any violations were found return
      * {@linkplain HttpStatus} - 406. Otherwise, {@linkplain HttpStatus} - 202 returned with information how many rows were saved.
-     *
      * @param file CSV {@linkplain MultipartFile} to be processed
-     * @return {@linkplain ResponseEntity} with with String message of result.
+     * @return {@linkplain String} with with String message of result.
      */
-    public ResponseEntity<String> processCsvFile(MultipartFile file) {
-        try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+    public String processCsvFile(MultipartFile file) throws IOException {
+        return processStream(file.getInputStream());
+    }
+
+    /**
+     * Get stream out of passed {@linkplain FileItemIterator} and create String Builder.
+     * @param fileItemIterator to iterate through the File stream.
+     * @return String message
+     */
+    public String processLargeCsvFile(FileItemIterator fileItemIterator) throws IOException, FileUploadException {
+        StringBuilder stringBuilder = new StringBuilder();
+        while(fileItemIterator.hasNext()){
+            stringBuilder.append(processStream(fileItemIterator.next().openStream()));
+        }
+        return stringBuilder.toString();
+    }
+
+    public String processStream(InputStream stream){
+        try (Reader reader = new BufferedReader(new InputStreamReader(stream))) {
 
             List<Record> records = getRecordCollection(reader);
 
@@ -56,16 +72,16 @@ public class RecordService {
                 str.deleteCharAt(str.length()-1);
                 str.deleteCharAt(str.length()-1);
                 str.deleteCharAt(str.length()-1);
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(str.toString());
+                return str.toString();
             }
 
             saveAll(records);
-            return ResponseEntity.accepted().body(records.size() + " records were saved.");
+            log.info("{} records were saved.", records.size());
+            return records.size() + " records were saved.";
 
         } catch (Exception e) {
             log.error("Exception: {}", e.getMessage());
-            return ResponseEntity.internalServerError()
-                    .body("An error occurred while processing the CSV file.");
+            return "An error occurred while processing the CSV file.";
         }
     }
 

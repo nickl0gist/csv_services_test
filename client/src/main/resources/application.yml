@@ -14,12 +14,11 @@ spring:
         format_sql: 'true'
     hibernate:
       ddl-auto: create-drop
-    show-sql: true
+    show-sql: false
   servlet:
     multipart:
-      enabled: true
-      max-file-size: 20MB
-      max-request-size: 20MB
+      max-file-size: 100MB
+      max-request-size: 100MB
 settings:
   csv:
     separator: ';'

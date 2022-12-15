@@ -85,7 +85,8 @@ class ClientControllerTest {
 
         //When
         mockMvc.perform(multipart(BASE_URL + "/upload_csv")
-                .file(mockMultipartFile))
+                .file(mockMultipartFile)
+                .header("Content-Type", "text/csv"))
 
                 // Then
                 .andDo(print())
